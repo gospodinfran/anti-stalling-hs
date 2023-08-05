@@ -1,24 +1,40 @@
-import pyautogui
-import time
-import random
+from pyautogui import moveTo, locateCenterOnScreen, doubleClick
+from sys import argv
+from time import sleep
+from random import uniform
+from PIL import Image
+from argparse import ArgumentParser
 
-# MAC ONLY
-# I increase the failsafe time because my mac can get laggy sometimes. Read more on https://pyautogui.readthedocs.io/en/latest/
-pyautogui.DARWIN_CATCH_UP_TIME = 0.1
+
+parser = ArgumentParser()
+parser.add_argument()
+
+# Automatically locates end turn button
+USE_SCREEN_LOCATE = True if argv[1] == True else False
+
+if USE_SCREEN_LOCATE:
+    end_turn = Image.open("end_turn.png")
+    end_turn_pos = locateCenterOnScreen(end_turn, confidence=.8)
+    enemy_turn = Image.open("enemy_turn.png")
+    enemy_turn_pos = locateCenterOnScreen(
+        enemy_turn, confidence=.8)
 
 
 def end_turn():
-    pyautogui.moveTo(2220, 700)
-    pyautogui.doubleClick()
+    if USE_SCREEN_LOCATE:
+        moveTo(end_turn)
+    else:
+        moveTo(2200, 600)
+
+    doubleClick()
 
 
 def end_turn_last_moment():
-    while True:
-        end_turn()
-        random_time = random.uniform(70, 73.5)
-        # The more your opponent stalls the higher you make this variable. Range: [0 - 75]
-        opponent_turn_time = 50
-        time.sleep(random_time + opponent_turn_time)
+    end_turn()
+    random_time = uniform(70, 73.5)
+    # The more your opponent stalls the higher you make this variable. Range: [0 - 75]
+    opponent_turn_time = 50
+    sleep(random_time + opponent_turn_time)
 
-
-end_turn_last_moment()
+# while True:
+    # end_turn_last_moment()
