@@ -1,5 +1,4 @@
 from pyautogui import moveTo, locateCenterOnScreen, doubleClick
-from sys import argv
 from time import sleep
 from random import uniform
 from PIL import Image
@@ -7,17 +6,17 @@ from argparse import ArgumentParser
 
 
 parser = ArgumentParser()
-parser.add_argument()
+parser.add_argument("--locate", action="store_true")
+args = parser.parse_args()
 
-# Automatically locates end turn button
-USE_SCREEN_LOCATE = True if argv[1] == True else False
+# Automatically locates end turn and enemy turn buttons
+USE_SCREEN_LOCATE = args.locate
 
 if USE_SCREEN_LOCATE:
     end_turn = Image.open("end_turn.png")
     end_turn_pos = locateCenterOnScreen(end_turn, confidence=.8)
-    enemy_turn = Image.open("enemy_turn.png")
-    enemy_turn_pos = locateCenterOnScreen(
-        enemy_turn, confidence=.8)
+    if end_turn:
+        print("Found button.")
 
 
 def end_turn():
@@ -25,7 +24,6 @@ def end_turn():
         moveTo(end_turn)
     else:
         moveTo(2200, 600)
-
     doubleClick()
 
 
@@ -36,5 +34,6 @@ def end_turn_last_moment():
     opponent_turn_time = 50
     sleep(random_time + opponent_turn_time)
 
-# while True:
-    # end_turn_last_moment()
+
+while True:
+    end_turn_last_moment()
