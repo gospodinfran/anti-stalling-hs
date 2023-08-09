@@ -29,7 +29,7 @@ def end_turn():
 
 def end_turn_last_moment():
     end_turn()
-    random_time = uniform(70, 73.5)
+    random_time = uniform(68, 72.5)
     # The more your opponent stalls the higher you make this variable. Range: [0 - 75]
     opponent_turn_time = 50
     sleep(random_time + opponent_turn_time)
